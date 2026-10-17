@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="ubrain, the Untrained Brain: a brain that learns from experience by local plasticity, with trained AI models as senses and robots as bodies.">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Untrained Brain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a lab notebook at night. One column of prose and evidence, the videos wide;
+   the amber of the robot's attention box is the only accent. */
+:root {
+  --bg: #f3f4f6;
+  --panel: #ffffff;
+  --ink: #161b24;
+  --muted: #586172;
+  --rule: #d9dde4;
+  --accent: #b07800;          /* the attention box, darkened to read on light paper */
+  --fell: #c0453a;
+  --stayed: #2f8a4c;
+  --code-bg: #e8ebf0;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11151c; --panel: #171c25; --ink: #e7eaf0; --muted: #98a1b2; --rule: #2a313d;
+    --accent: #ffd200; --fell: #ff7a6e; --stayed: #8fe3a0; --code-bg: #1d232e; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11151c; --panel: #171c25; --ink: #e7eaf0; --muted: #98a1b2; --rule: #2a313d;
+  --accent: #ffd200; --fell: #ff7a6e; --stayed: #8fe3a0; --code-bg: #1d232e; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 400 1.0625rem/1.65 var(--body); }
+.wrap { max-width: 68rem; margin: 0 auto; padding-inline: 1.25rem; padding-block: 2.5rem 4rem;
+  display: flex; flex-direction: column; gap: 3.5rem; }
+h1, h2 { font-family: var(--display); font-weight: 700; letter-spacing: -0.015em; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); line-height: 1.02; }
+h2 { font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.15; }
+p { margin: 0; max-width: 64ch; }
+.eyebrow { font: 500 0.78rem/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.lede { font-size: 1.2rem; color: var(--muted); }
+.tag { font-family: var(--display); font-weight: 500; font-size: clamp(1.1rem, 2.2vw, 1.4rem); color: var(--accent); }
+header { display: flex; flex-direction: column; gap: 1rem; }
+.preview { align-self: flex-start; font: 500 0.78rem/1 var(--mono); padding: 0.45rem 0.6rem;
+  border: 1px solid var(--rule); border-radius: 4px; color: var(--muted); }
+section { display: flex; flex-direction: column; gap: 1.1rem; }
+figure { margin: 0; display: flex; flex-direction: column; gap: 0.7rem; }
+video { width: 100%; max-width: 100%; aspect-ratio: 16 / 9; height: auto; display: block;
+  background: #0b0e13; border-radius: 6px; }
+figcaption { font-size: 0.95rem; color: var(--muted); max-width: 72ch; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1.5rem 2rem; }
+.fact { display: flex; flex-direction: column; gap: 0.4rem; min-width: 0; border-top: 2px solid var(--accent); padding-top: 0.8rem; }
+.fact h3 { font: 700 1.1rem/1.25 var(--display); margin: 0; }
+.fact p { color: var(--muted); font-size: 0.98rem; }
+.record { font: 500 1.35rem/1.2 var(--mono); letter-spacing: 0.18em; overflow-x: auto; white-space: nowrap; }
+.record .x { color: var(--fell); } .record .o { color: var(--stayed); }
+.record small { display: block; font: 400 0.8rem/1.4 var(--mono); letter-spacing: 0; color: var(--muted); margin-top: 0.4rem; white-space: normal; }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); gap: 2rem; align-items: start; }
+.two > * { min-width: 0; }
+.tablebox { overflow-x: auto; }
+table { border-collapse: collapse; font-variant-numeric: tabular-nums; font-family: var(--mono); font-size: 0.95rem; }
+th, td { text-align: right; padding: 0.45rem 1rem 0.45rem 0; border-bottom: 1px solid var(--rule); }
+th { font: 500 0.75rem/1.2 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+td:first-child, th:first-child { text-align: left; }
+pre { margin: 0; background: var(--code-bg); border-radius: 6px; padding: 1rem 1.1rem; overflow-x: auto;
+  font: 400 0.92rem/1.6 var(--mono); }
+.labs { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.6rem;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+.labs li { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 0.8rem 1rem; min-width: 0; }
+.labs b { font-family: var(--display); font-weight: 700; display: block; }
+.labs span { color: var(--muted); font-size: 0.93rem; }
+footer { border-top: 1px solid var(--rule); padding-top: 1.2rem; color: var(--muted); font-size: 0.9rem;
+  display: flex; flex-direction: column; gap: 0.4rem; }
+a { color: var(--accent); }
+a:focus-visible, video:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="preview">Early preview · pre-release 0.6</span>
+    <span class="eyebrow">ubrain · the untrained brain</span>
+    <h1>A brain that was never trained.</h1>
+    <p class="tag">Never trained, always learning.</p>
+    <p class="lede">It learns from experience the way synapses do, one event at a time: a memory from a
+      single glance, a value from each reward, a reflex from its own body. Plug in a trained AI model as
+      its senses and a robot as its body, and it runs on a laptop.</p>
+  </header>
+
+  <section aria-labelledby="explorer">
+    <span class="eyebrow">Demonstration 1</span>
+    <h2 id="explorer">It walks past 21 photographs and remembers them in order</h2>
+    <figure>
+      <video controls muted playsinline preload="metadata" poster="explorer.jpg">
+        <source src="explorer.mp4" type="video/mp4">
+      </video>
+      <figcaption>A Unitree G1 humanoid in MuJoCo, walking at 0.5 m/s. Left: the robot from a camera that
+        follows it. Right: its mind. Five times a second it glances at what it sees, CLIP names the
+        picture, and once a picture holds steady for three glances the hippocampus writes it into one
+        episode. At the end a cue recalls each slot: 12 written, 12 recalled exactly. Perception made one
+        mistake (the clock was read as the laptop), and the robot drifts off the path after 12 pictures.</figcaption>
+    </figure>
+  </section>
+
+  <section aria-labelledby="ideas">
+    <span class="eyebrow">What is different</span>
+    <h2 id="ideas">Three ideas</h2>
+    <div class="facts">
+      <div class="fact">
+        <h3>Untrained</h3>
+        <p>No dataset, no gradient descent, no pre-training. Every region learns online by a local
+          rule: the hippocampus binds in one shot, the striatum follows reward-prediction errors, the
+          cerebellum learns from its own prediction errors.</p>
+      </div>
+      <div class="fact">
+        <h3>Predicted before it runs</h3>
+        <p>Each behaviour follows a law written down before it was measured. Give ubrain a model's codes
+          and it returns a certificate: how much the brain can hold with them, before anything is stored.</p>
+      </div>
+      <div class="fact">
+        <h3>Any model, any body</h3>
+        <p>Trained models plug in as senses (CLIP today), bodies as interfaces (a simulated humanoid, a
+          game, a bandit). The brain sees typed channels, never pixels or motors.</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="brace">
+    <span class="eyebrow">Demonstration 2</span>
+    <h2 id="brace">It learns to brace against a push it hears coming</h2>
+    <figure>
+      <video controls muted playsinline preload="metadata" poster="bracing.jpg">
+        <source src="bracing.mp4" type="video/mp4">
+      </video>
+      <figcaption>A tone, then 0.2 s later a 250 N push from the front, every four seconds. The brain only
+        hears the tone; it never feels the push, only what the push does to its body. Its cerebellum keeps
+        a fading trace of the tone and learns the counter-move that, made just before the push lands, keeps
+        the robot standing: eyeblink conditioning in a humanoid.</figcaption>
+    </figure>
+    <div class="two">
+      <div class="record" aria-label="Bracing muted: fell on all five pushes">
+        <span class="x">XXXXX</span>
+        <small>Bracing muted: fell on 5 of 5 pushes.</small>
+      </div>
+      <div class="record" aria-label="Bracing on: fell on the first five pushes, then stayed up on five of the next seven">
+        <span class="x">XXXXX</span><span class="o">.</span><span class="x">X</span><span class="o">..</span><span class="x">X</span><span class="o">..</span>
+        <small>A fresh brain, bracing on: falls while nothing is learned, then stays up on 5 of the next 7.
+          X fell, · stayed up.</small>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="cert">
+    <span class="eyebrow">The certificate</span>
+    <h2 id="cert">The prediction comes first</h2>
+    <div class="two">
+      <p>An episode of k items is stored in one vector, so the items interfere and recall falls as k grows.
+        Before storing anything, <code>ubrain.certify</code> evaluates the law on the sense's own codes. Then the
+        brain runs. Here: white codes in 128 dimensions, 500 known items, 200 episodes per load, recall of the
+        first item.</p>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>items k</th><th>certificate</th><th>measured</th></tr></thead>
+          <tbody>
+            <tr><td>4</td><td>0.999</td><td>1.000</td></tr>
+            <tr><td>8</td><td>0.861</td><td>0.870</td></tr>
+            <tr><td>16</td><td>0.444</td><td>0.480</td></tr>
+            <tr><td>24</td><td>0.248</td><td>0.255</td></tr>
+            <tr><td>32</td><td>0.165</td><td>0.165</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="start">
+    <span class="eyebrow">Start</span>
+    <h2 id="start">Five minutes to a learning brain</h2>
+    <p>Invite-only for now. With access to the repository and <a href="https://docs.astral.sh/uv/">uv</a>
+      installed, no GPU needed:</p>
+    <pre><code>git clone https://github.com/untrained-brain/ubrain
+cd ubrain
+uv run examples/01_bandit.py          # the striatum learns which action pays
+uv run examples/02_memory.py          # one-shot memory, against its certificate
+
+cd bodies/mujoco &amp;&amp; uv sync &amp;&amp; cd ../..    # once: the G1 body
+uv run --extra vision --extra video examples/g1_explorer.py --viewer</code></pre>
+    <p>In your own code, the whole interface is one call per event:</p>
+    <pre><code>from ubrain import Brain, Channel, Manifest, profile
+body = Manifest("my-app", "v1", (Channel("situation", "event", 3),
+                                 Channel("reward", "reward", 1),
+                                 Channel("action", "choice", 2)))
+brain = Brain(profile("player"), body)
+action = brain.tick({"situation": [1, 0, 0], "reward": None})["action"]</code></pre>
+  </section>
+
+  <section aria-labelledby="labs">
+    <span class="eyebrow">For courses</span>
+    <h2 id="labs">Five labs, each a prediction you can test</h2>
+    <ul class="labs">
+      <li><b>Learning from reward</b><span>The striatum: values from reward-prediction errors; choice that matches payoffs.</span></li>
+      <li><b>One-shot memory</b><span>The hippocampus: an episode in one vector, and its capacity, certified.</span></li>
+      <li><b>Plugging in a model</b><span>CLIP as a sense: the cone of its codes, and what centring does.</span></li>
+      <li><b>A brain in a body</b><span>The cerebellum predicts the walking G1 and learns to brace.</span></li>
+      <li><b>Seeing and remembering</b><span>Perception's errors and memory's, measured apart.</span></li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>Copyright 2026 Hong Jeong. Examples and documentation: Apache-2.0. The ubrain package: free
+      for any use, including commercial; distributed compiled.</span>
+    <span>Simulation: MuJoCo with the Unitree G1 from the MuJoCo Menagerie and Unitree's walking policy
+      (BSD-3). Gallery photographs: CC0, credited in the repository.</span>
+  </footer>
+</div>
+
+</html>
